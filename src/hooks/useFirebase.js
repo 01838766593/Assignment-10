@@ -6,29 +6,22 @@ initializeAuthentication();
 
 const useFirebase = () => {
     const [user, setUser] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+    const [loading, setLoading] = useState(true)
     const auth = getAuth();
     const googleProvider = new GoogleAuthProvider();
 
     const signInUsingGoogle = () => {
-        setIsLoading(true);
-        signInWithPopup(auth, googleProvider)
-            .then(result => {
-                console.log(result.user)
-                setUser(result.user);
-            })
-            //(mod-61-8)error ashuk or na ashuk finally kj korbe
-            .finally(() => setIsLoading(false));
+        return signInWithPopup(auth, googleProvider)
+            .finally(() => { setLoading(false) });
     }
 
     const logOut = () => {
-        setIsLoading(true)
+        setLoading(true);
         signOut(auth)
             .then(() => {
                 setUser({})
             })
-            // (mod-61-8)error ashuk or na ashuk finally kj korbe
-            .finally(() => setIsLoading(false));
+            .finally(() => setLoading(false))
     }
 
     // observe whether user auth state changed or not
@@ -40,14 +33,14 @@ const useFirebase = () => {
             else {
                 setUser({});
             }
-            setIsLoading(false)
+            setLoading(false);
         });
         return () => unsubscribe;
     }, [])
 
     return {
         user,
-        isLoading,
+        loading,
         signInUsingGoogle,
         logOut
     }

@@ -5,10 +5,8 @@ import useAuth from '../../hooks/useAuth';
 
 
 const PrivateRoute = ({ children, ...rest }) => {
-    const { user, isLoading } = useAuth();
-    if (isLoading) {
-        return <Spinner animation="border" variant="danger" />
-    }
+    const { user, loading } = useAuth();
+    if (loading) return 'loading';
     return (
         <Route
             {...rest}
@@ -17,9 +15,7 @@ const PrivateRoute = ({ children, ...rest }) => {
                     pathname: "/login",
                     state: { from: location }
                 }}
-            ></Redirect>
-
-            }
+            ></Redirect>}
         >
 
         </Route>
