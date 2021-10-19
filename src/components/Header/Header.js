@@ -1,4 +1,4 @@
-import { Button, Container, Navbar, NavLink } from "react-bootstrap";
+import { Button, Container, Nav, Navbar, NavLink } from "react-bootstrap";
 import useAuth from "../../hooks/useAuth";
 import { HashLink } from 'react-router-hash-link';
 import { Link } from 'react-router-dom';
@@ -8,20 +8,20 @@ const Header = () => {
     const { user, logOut } = useAuth();
     return (
         <div className="py-4">
-            <Navbar bg="dark" style={{ height: '55px' }} variant="dark" fixed="top" collapseOnSelect expand="lg" >
+            <Navbar bg="dark" style={{ height: '55px' }} variant="dark" sticky="top" collapseOnSelect expand="lg" >
                 <Container>
                     <h3 className="textExtra"><span id="textMain"> HealthCare </span>Services</h3>
                     <Navbar.Toggle />
                     <Navbar.Collapse className="justify-content-center">
-                        <NavLink as={HashLink} to="/home#home" style={{ margin: '10px', textDecoration: 'none', color: 'white' }} >Home</NavLink>
+                        <Nav.Link as={HashLink} to="/home#home" style={{ margin: '10px', textDecoration: 'none', color: 'white' }} >Home</Nav.Link>
 
-                        <NavLink as={HashLink} to="/home#about" style={{ textDecoration: 'none', color: 'white' }}>About</NavLink>
-
-
-                        <NavLink as={HashLink} to="/home#DoctorServices" style={{ textDecoration: 'none', color: 'white' }}>Doctor Services</NavLink>
+                        <Nav.Link as={HashLink} to="/home#about" style={{ textDecoration: 'none', color: 'white' }}>About</Nav.Link>
 
 
-                        <NavLink as={HashLink} to="/home#more" style={{ textDecoration: 'none', color: 'white' }} >More</NavLink>
+                        <Nav.Link as={HashLink} to="/home#DoctorServices" style={{ textDecoration: 'none', color: 'white' }}>Doctor Services</Nav.Link>
+
+
+                        <Nav.Link as={HashLink} to="/home#more" style={{ textDecoration: 'none', color: 'white' }} >More</Nav.Link>
 
 
                         {user?.displayName ?
