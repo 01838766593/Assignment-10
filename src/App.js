@@ -9,6 +9,9 @@ import NotFound from './components/NotFound/NotFound';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Booking from './components/Booking/Booking';
 import More from './components/More/More';
+import Register from './components/Register/Register';
+import Administrative from './components/Administrative/Administrative';
+import Pricings from './components/Pricings/Pricings';
 
 
 function App() {
@@ -29,6 +32,15 @@ function App() {
             </Route>
             <Route path="/more">
               <More></More>
+            </Route>
+            <Route path="/register">
+              <Register></Register>
+            </Route>
+            <Route path="/administrative">
+              <Administrative></Administrative>
+            </Route>
+            <Route path="/pricing">
+              <Pricings></Pricings>
             </Route>
             <PrivateRoute path="/booking/:serviceId">
               <Booking></Booking>

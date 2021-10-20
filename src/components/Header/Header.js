@@ -7,21 +7,23 @@ import './Header.css';
 const Header = () => {
     const { user, logOut } = useAuth();
     return (
-        <div className="py-4">
-            <Navbar bg="dark" style={{ height: '55px' }} variant="dark" sticky="top" collapseOnSelect expand="lg" >
+        <div>
+            <Navbar bg="dark" style={{ height: '55px' }} variant="dark" fixed="top" collapseOnSelect expand="lg" >
                 <Container>
-                    <h3 className="textExtra"><span id="textMain"> HealthCare </span>Services</h3>
+                    <NavLink as={Link} to="/" style={{ textDecoration: 'none' }}><h3 className="textExtra"><span id="textMain"> HealthCare </span>Services</h3></NavLink>
                     <Navbar.Toggle />
-                    <Navbar.Collapse className="justify-content-center">
+                    <Navbar.Collapse className="justify-content-center bg-dark">
                         <Nav.Link as={HashLink} to="/home#home" style={{ margin: '10px', textDecoration: 'none', color: 'white' }} >Home</Nav.Link>
 
                         <Nav.Link as={HashLink} to="/home#about" style={{ textDecoration: 'none', color: 'white' }}>About</Nav.Link>
 
-
-                        <Nav.Link as={HashLink} to="/home#DoctorServices" style={{ textDecoration: 'none', color: 'white' }}>Doctor Services</Nav.Link>
+                        {/* 
+                        <Nav.Link as={HashLink} to="/home#DoctorServices" style={{ textDecoration: 'none', color: 'white' }}>Doctor Services</Nav.Link> */}
 
 
                         <Nav.Link as={HashLink} to="/home#more" style={{ textDecoration: 'none', color: 'white' }} >More</Nav.Link>
+                        <Nav.Link as={Link} to="/administrative" style={{ textDecoration: 'none', color: 'white' }} >Administrative</Nav.Link>
+                        <Nav.Link as={Link} to="/pricing" style={{ textDecoration: 'none', color: 'white' }} >Pricing</Nav.Link>
 
 
                         {user?.displayName ?
@@ -32,33 +34,12 @@ const Header = () => {
 
                         <Navbar.Text>
                             {user.displayName &&
-                                <a href="#login"> Signed in as {user?.displayName}</a>}
+                                <a href="#login" style={{ textDecoration: 'none', paddingLeft: '5px', color: 'yellow', fontWeight: 'bold' }}>User:{user?.displayName}</a>}
                         </Navbar.Text>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-
-            {/* <>
-                < Navbar bg="dark" variant="dark" sticky="top" collapseOnSelect expand="lg" >
-                    <Container >
-                        <Navbar.Toggle />
-                        <Navbar.Collapse className="justify-content-center">
-                            <Nav.Link as={HashLink} to="/home#home">Home</Nav.Link>
-                            <Nav.Link as={HashLink} to="/home#about">About</Nav.Link>
-                            <Nav.Link as={HashLink} to="/home#DoctorServices">Doctor Services</Nav.Link>
-                            <Nav.Link as={HashLink} to="/home#more">More</Nav.Link>
-                            {user?.email ?
-                                <Button onClick={logOut} variant="light">Logout</Button> :
-                                <Nav.Link as={Link} to="/login">Login</Nav.Link>}
-                            <Navbar.Text>
-                                Signed in as: <a href="#login">{user?.displayName}</a>
-                            </Navbar.Text>
-                        </Navbar.Collapse>
-
-                    </Container>
-                </Navbar>
-            </> */}
-        </div>
+        </div >
     );
 };
 

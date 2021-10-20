@@ -1,94 +1,205 @@
-import React from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 
+import './Login.css';
+
+
 const Login = () => {
-    const { signInUsingGoogle, isLogin,
-        handleNameChange,
-        handleEmailChange,
-        handlePasswordChange,
-        toggleLogin,
-        handleResetPassword,
-        handleRegistration,
-        error } = useAuth();
-    //give location of currenly previous url
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { signInUsingEmailandPassword, user, error, setUser, setError, loading, setLoading } = useAuth();
+
+    // taking location for redirecting 
     const location = useLocation();
+    const redirect_url = location.state?.from || '/home';
+
     const history = useHistory();
-    //(module-59-8)kono page theke login e gele current prvious page location?.state diye sve kore rakhe or direct login page e gele shop page e direct hbe
-    const redirect_uri = location.state?.from || '/shop';
 
-
-    const handleGoogleLogin = () => {
-        signInUsingGoogle()
+    const handleGoogleLoginRedirect = () => {
+        signInWithGoogle()
             .then(result => {
-                console.log(result.user);
-                history.push(redirect_uri);
+                setUser(result.user);
+                history.push(redirect_url);
             })
+            .finally(() => {
+                setLoading(false);
+            });
     }
 
+    const handleEmailChange = e => {
+        setEmail(e.target.value);
+    }
+    const handlePasswordChange = e => {
+        setPassword(e.target.value);
+    }
+    const handleLogin = e => {
+        e.preventDefault();
+        console.log(email, password);
+        signInUsingEmailandPassword(email, password)
+            .then((userCredential) => {
+                setUser(userCredential.user);
+                history.push(redirect_url);
+                setError('');
+            })
+            .catch((error) => {
+                setError('Wrong Email/Password');
+            })
+            .finally(() => {
+                setLoading(false);
+            })
+            ;
+
+    }
+
+
+    const googleIcon = <FontAwesomeIcon icon={faGoogle} />;
+    const { signInWithGoogle } = useAuth();
     return (
-        <div className="mx-5">
-            <form onSubmit={handleRegistration}>
-                <h3 className="text-primary">Please {isLogin ? 'Login' : 'Register'}</h3>
-                {!isLogin && <div className="row mb-3">
-                    <label htmlFor="inputName" className="col-sm-2 col-form-label">Name</label>
-                    <div className="col-sm-10">
-                        <input type="text" onBlur={handleNameChange} className="form-control" id="inputName" placeholder="Your Name" />
-                    </div>
-                </div>}
-                <div className="row mb-3">
-                    <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">Email</label>
-                    <div className="col-sm-10">
-                        <input onBlur={handleEmailChange} type="email" className="form-control" id="inputEmail3" required />
-                    </div>
-                </div>
-                <div className="row mb-3">
-                    <label htmlFor="inputPassword3" className="col-sm-2 col-form-label">Password</label>
-                    <div className="col-sm-10">
-                        <input type="password" onBlur={handlePasswordChange} className="form-control" id="inputPassword3" required />
-                    </div>
-                </div>
-                <div className="row mb-3">
-                    <div className="col-sm-10 offset-sm-2">
-                        <div className="form-check">
-                            <input onChange={toggleLogin} className="form-check-input" type="checkbox" id="gridCheck1" />
-                            <label className="form-check-label" htmlFor="gridCheck1">
-                                Already Registered?
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div className="row mb-3 text-danger">{error}</div>
-                <button type="submit" className="btn btn-primary">
-                    {isLogin ? 'Login' : 'Register'}
-                </button>
-                <button type="button" onClick={handleResetPassword} className="btn btn-secondary btn-sm">Reset Password</button>
+        <div >
+            <div className="login-container">
+                <h2 className="display-5 text-primary mt-4">Please Login</h2>
+                <div className="login-form">
+                    <div>
+                        <form onSubmit={handleLogin} className="w-50 mx-auto my-5">
+                            <div className="form-group row mt-5">
+                                <label htmlFor="staticEmail" className="col-sm-2 col-form-label">Email</label>
+                                <div className="col-sm-10 mb-4">
+                                    <input onBlur={handleEmailChange} type="email" className="form-control" id="staticEmail" placeholder="Enter email" required />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label htmlFor="inputPassword" className="col-sm-2 col-form-label">Password</label>
+                                <div className="col-sm-10 mb-2">
+                                    <input onBlur={handlePasswordChange} type="password" className="form-control" id="inputPassword" placeholder="Password" required />
+                                </div>
+                            </div>
+                            <div className="form-group row"><p className="text-danger"></p>
+                            </div>
 
-            </form>
-            <br /><br /><br />
-            <div>--------------------------------</div>
-            <br /><br /><br />
-            <button onClick={handleGoogleLogin}>Google Sign In</button>
+                            <div className="d-flex justify-content-center">
+                                <h5>{error}</h5>
+                                <div> <input className="btn btn-dark ms-4 me-4" type="submit" value="Login" /></div>
+                                <div>
+                                    <button className="button" onClick={handleGoogleLoginRedirect}><span className="google-icon">{googleIcon}</span></button>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div >
+
+                <h3 className="fw-light text-success mt-5">Not Registered?</h3>
+                <Link to="/register">Click Here to Register</Link>
+            </div>
         </div>
-
-
-
-        // <div className="login-form">
-        //     <div>
-        //         <h2>Login</h2>
-        //         <form>
-        //             <input type="email" name="" id="" placeholder="Your Email" />
-        //             <br />
-        //             <input type="password" name="" id="" />
-        //             <br />
-        //             <input type="submit" value="Submit" />
-        //         </form>
-        //         <p>new to ema-john website? <Link to="/register">Create Account</Link></p>
-        //         <div>-------or----------</div>
-        //         <button onClick={handleGoogleLogin} className="btn btn-warning">Google Sign in</button>
-        //     </div>
-        // </div>
     );
 };
 
 export default Login;
+
+
+
+// import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import React, { useState } from 'react';
+// import { Link } from 'react-router-dom';
+// import { useHistory, useLocation } from 'react-router';
+// import './Login.css';
+// import useAuth from '../../hooks/useAuth';
+
+
+// const Login = () => {
+
+//     const [email, setEmail] = useState('');
+//     const [password, setPassword] = useState('');
+//     const { signInUsingEmailandPassword, user, setUser, setError, error } = useAuth();
+
+//     // taking location for redirecting 
+//     const location = useLocation();
+//     const redirect_url = location.state?.from || '/home';
+
+//     const history = useHistory();
+
+//     const handleGoogleLoginRedirect = () => {
+//         signInWithGoogle()
+//             .then(result => {
+//                 setUser(result.user);
+//                 history.push(redirect_url);
+//             })
+//     }
+
+//     const handleEmailChange = e => {
+//         setEmail(e.target.value);
+
+//     }
+//     const handlePasswordChange = e => {
+//         setPassword(e.target.value);
+//     }
+//     const handleLogin = e => {
+//         e.preventDefault();
+//         console.log(email, password);
+//         signInUsingEmailandPassword(email, password)
+//             .then((userCredential) => {
+//                 setUser(userCredential.user);
+//                 history.push(redirect_url);
+//                 setError('');
+//             })
+//             .catch((error) => {
+//                 setError(error.message);
+//             });;
+
+//     }
+
+
+//     const googleIcon = <FontAwesomeIcon icon={faGoogle} />;
+//     const { signInWithGoogle } = useAuth();
+//     return (
+//         <div >
+//             <div className="login-container">
+//                 <h2 className="display-5 text-primary mt-4">Please Login</h2>
+//                 <div className="login-form">
+//                     <div>
+//                         <form onSubmit={handleLogin} className="w-50 mx-auto my-5">
+//                             <div className="form-group row mt-5">
+//                                 <label htmlFor="staticEmail" className="col-sm-2 col-form-label">Email</label>
+//                                 <div className="col-sm-10 mb-4">
+//                                     <input onBlur={handleEmailChange} type="email" className="form-control" id="staticEmail" placeholder="Enter email" required />
+//                                 </div>
+//                             </div>
+//                             <div className="form-group row">
+//                                 <label htmlFor="inputPassword" className="col-sm-2 col-form-label">Password</label>
+//                                 <div className="col-sm-10 mb-2">
+//                                     <input onBlur={handlePasswordChange} type="password" className="form-control" id="inputPassword" placeholder="Password" required />
+//                                 </div>
+//                             </div>
+//                             <div className="form-group row"><p className="text-danger"></p>
+//                             </div>
+
+//                             <div className="d-flex justify-content-center">
+
+//                                 <div> <input className="btn btn-dark mt-2" type="submit" value="Login" /></div>
+//                                 <div>
+//                                     <button className="button" onClick={handleGoogleLoginRedirect}><span className="google-icon">{googleIcon}</span></button>
+//                                 </div>
+
+//                             </div>
+//                         </form>
+
+//                     </div>
+//                 </div >
+
+//                 <h3 className="fw-light text-success mt-5">Not Registered?</h3>
+//                 <Link to="/register">Click Here to Register</Link>
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default Login;
+
