@@ -72,7 +72,7 @@ const Booking = () => {
     console.log(user);
     return (
         <div>
-            <h2>This is booking: {serviceId}</h2>
+
             {
                 user.map(show => <BookingDetail>key={show.id}
                     show={show}</BookingDetail>)
