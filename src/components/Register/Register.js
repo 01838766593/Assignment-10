@@ -8,6 +8,7 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+    const [comment, setComment] = useState('');
     const { registerWithEmailandPass, error, setError, setUser, user, setUserName } = useAuth();
 
     // taking location for redirecting 
@@ -28,10 +29,9 @@ const Register = () => {
         e.preventDefault();
         console.log(email, password);
         if (password.length < 6) {
-            setError('Password must be at least 6 characters long!')
+            setComment('Password must be at least 6 characters long!')
             return;
         }
-
 
         registerWithEmailandPass(name, email, password)
             .then((userCredential) => {
@@ -39,10 +39,11 @@ const Register = () => {
                 setError('');
                 setUserName(name);
                 history.push(redirect_url);
+                setComment('Registration done');
 
             })
             .catch((error) => {
-                setError(error.message);
+                setComment(error.message);
 
             });
     }
@@ -75,7 +76,7 @@ const Register = () => {
                             <input onBlur={handlePasswordChange} type="password" className="form-control" id="inputPassword" placeholder="Password" required />
                         </div>
                     </div>
-
+                    <h5>{comment}</h5>
                     <input className="btn btn-dark" type="submit" value="Register" />
                 </form>
                 <div>

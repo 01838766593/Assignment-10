@@ -12,6 +12,7 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [comment, setComment] = useState('');
     const { signInUsingEmailandPassword, user, error, setUser, setError, loading, setLoading } = useAuth();
 
     // taking location for redirecting 
@@ -38,16 +39,17 @@ const Login = () => {
         setPassword(e.target.value);
     }
     const handleLogin = e => {
+        //to prevent reloading/refreshh after clicking or submitting
         e.preventDefault();
         console.log(email, password);
         signInUsingEmailandPassword(email, password)
             .then((userCredential) => {
                 setUser(userCredential.user);
                 history.push(redirect_url);
-                setError('');
+                setComment('');
             })
             .catch((error) => {
-                setError('Wrong Email/Password');
+                setComment('Wrong Email/Password');
             })
             .finally(() => {
                 setLoading(false);
@@ -65,7 +67,7 @@ const Login = () => {
                 <h2 className="display-5 text-primary mt-4">Please Login</h2>
                 <div className="login-form">
                     <div>
-                        <form onSubmit={handleLogin} className="w-50 mx-auto my-5">
+                        <form onClick={handleLogin} className="w-50 mx-auto my-5">
                             <div className="form-group row mt-5">
                                 <label htmlFor="staticEmail" className="col-sm-2 col-form-label">Email</label>
                                 <div className="col-sm-10 mb-4">
@@ -82,7 +84,7 @@ const Login = () => {
                             </div>
 
                             <div className="d-flex justify-content-center">
-                                <h5>{error}</h5>
+                                <h5>{comment}</h5>
                                 <div> <input className="btn btn-dark ms-4 me-4" type="submit" value="Login" /></div>
                                 <div>
                                     <button className="button" onClick={handleGoogleLoginRedirect}><span className="google-icon">{googleIcon}</span></button>

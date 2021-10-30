@@ -5,7 +5,7 @@ import DoctorService from "../DoctorService/DoctorService";
 import './DoctorServices.css';
 
 const DoctorServices = () => {
-    const { services } = useData();
+    const [services] = useData();
 
     console.log(services)
 

@@ -9,14 +9,14 @@
   @media only screen and (max-width:688px) {
     .backColor{
       width:100%;
-      margin-left: 20px;
+      
     }
    
 }
 @media only screen and (min-width:689px) and (max-width: 991px){
     .backColor{
         width:100%;
-        margin-left: 20px;
+      
       }
   
 }
